@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BlocksManager : MonoBehaviour
@@ -28,6 +29,20 @@ public class BlocksManager : MonoBehaviour
         }
     }
 
+    public void CheckBlockForExplode(Block b)
+    {
+        Physics2D.SyncTransforms();
+        var list = GetSameColorBlocks(b);
+
+        if (list.Count < 3) return;
+        
+        foreach (var neighbour in list)
+        {
+            neighbour.Explode();
+        }
+        b.Explode();
+    }
+
     public void CheckAllBlocksForExplode()
     {
         foreach (var b in _allBlocks)
@@ -40,7 +55,6 @@ public class BlocksManager : MonoBehaviour
             {
                 neighbour.Explode();
             }
-            b.Explode();
             
             // Call the function again since probably a lot of blocks are removed
             // from the list. So it's better to restart iterating the list
@@ -51,6 +65,8 @@ public class BlocksManager : MonoBehaviour
 
     public void PlaceBlocks(List<Block> blocks, int horizontalPos)
     {
+        if (blocks.Count == 0)
+            return;
         Vector3 origin = new Vector3(horizontalPos, -cam.Height);
         var hit = Physics2D.Raycast(origin, Vector2.up, float.PositiveInfinity, blocksLayer);
 
@@ -73,7 +89,7 @@ public class BlocksManager : MonoBehaviour
             blocks[i].EndHold();
         }
         
-        CheckAllBlocksForExplode();
+        CheckBlockForExplode(blocks[0]);
     }
 
     public List<Block> GetVerticalBlocksFromBottom(int horizontalPos, int maxCount)
@@ -107,7 +123,8 @@ public class BlocksManager : MonoBehaviour
     public List<Block> GetSameColorBlocks(Block block)
     {
         List<Block> blocks = new List<Block>();
-        
+
+        blocks.Add(block);
         CheckExplodeRecursive(block, blocks);
 
         return blocks;

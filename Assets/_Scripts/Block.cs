@@ -98,7 +98,8 @@ public class Block : MonoBehaviour
 
     public void Explode()
     {
-        _blocksManager.RemoveBlock(this);
+        if (_blocksManager)
+            _blocksManager.RemoveBlock(this);
         Destroy(gameObject);
     }
 
