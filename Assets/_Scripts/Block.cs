@@ -48,8 +48,6 @@ public class Block : MonoBehaviour
 
     private void Start()
     {
-        if (_blocksManager)
-            _blocksManager.AddBlock(this);
         _visualPosSpring.Current = transform.position;
     }
 
@@ -111,5 +109,11 @@ public class Block : MonoBehaviour
 
         float squash = 1 + (Mathf.Abs(verticalVel) / squashAmountOverVelocity);
         visual.localScale = new Vector3(1 / squash, squash);
+    }
+
+    public void Init(BlocksManager parent)
+    {
+        _blocksManager = parent;
+        _blocksManager.AddBlock(this);
     }
 }

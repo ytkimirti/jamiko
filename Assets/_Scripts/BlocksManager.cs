@@ -2,7 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
+using Random = UnityEngine.Random;
+using Update = Unity.VisualScripting.Update;
 
 public class BlocksManager : MonoBehaviour
 {
@@ -11,8 +15,30 @@ public class BlocksManager : MonoBehaviour
     private List<Block> _allBlocks = new List<Block>();
     [SerializeField] private GameplayCameraController cam;
     [SerializeField] private LayerMask blocksLayer;
+    [SerializeField] private BlockType[] blockPrefabs;
 
-    
+    [Serializable]
+    private class BlockType
+    {
+        public BlockKind kind;
+        public GameObject prefab;
+    }
+
+    private GameObject GetRandomBlockPrefab()
+    {
+        return blockPrefabs[Random.Range(0, blockPrefabs.Length)].prefab;
+    }
+
+    public void SpawnRandomRow()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            float xPos = (i - 2) * 1;
+            var pos = new Vector3(xPos, cam.Height, 0);
+            Block block = Instantiate(GetRandomBlockPrefab(), pos, Quaternion.identity, transform).GetComponent<Block>();
+            block.Init(this);
+        }
+    }
 
     public void AddBlock(Block b) => _allBlocks.Add(b);
     public void RemoveBlock(Block b) => _allBlocks.Remove(b);
@@ -90,6 +116,12 @@ public class BlocksManager : MonoBehaviour
         }
         
         CheckBlockForExplode(blocks[0]);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+            SpawnRandomRow();
     }
 
     public List<Block> GetVerticalBlocksFromBottom(int horizontalPos, int maxCount)
