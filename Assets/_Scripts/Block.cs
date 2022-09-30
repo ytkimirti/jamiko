@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum BlockKind
 {
+    None,
     Red,
     Blue,
     Yellow,
@@ -13,13 +14,43 @@ public enum BlockKind
 
 public class Block : MonoBehaviour
 {
-    [SerializeField] private LayerMask blocksLayerMask;
+    [SerializeField] private LayerMask blocksLayerMask; 
     private BlocksManager _blocksManager;
     public BlockKind kind;
+    
+    public bool IsHolded { get; private set; }
+    [SerializeField] private Vector3Spring _visualPosSpring;
+    [SerializeField] private float squashAmountOverVelocity;
+
+    
+    
+    [Header("Refernces")]
+    [SerializeField] private Collider2D col;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform visual;
+
+    
+    // public void SetTargetHoldPos(Vector2 pos) => _targetHoldPos = pos;
+
+    public void StartHold()
+    {
+        col.enabled = false;
+        rb.isKinematic = true;
+        IsHolded = true;
+    }
+
+    public void EndHold()
+    {
+        col.enabled = true;
+        rb.isKinematic = false;
+        IsHolded = false;
+    }
 
     private void Start()
     {
-        _blocksManager.AddBlock(this);
+        if (_blocksManager)
+            _blocksManager.AddBlock(this);
+        _visualPosSpring.Current = transform.position;
     }
 
 
@@ -41,26 +72,43 @@ public class Block : MonoBehaviour
         };
         foreach (Vector2 dir in directions)
         {
-            var origin = (Vector2)transform.position + dir;
+            var block = CheckDirForBlock(dir);
 
-            var col = Physics2D.OverlapCircle(origin, 0.1f, blocksLayerMask);
-
-            if (!col) continue;
-            
-            var block = col.gameObject.GetComponent<Block>();
-                
-            Debug.Assert(block != null);
-                
+            if (!block) continue;
             blocks.Add(block);
-            Gizmos.DrawLine(transform.position, origin);
         }
 
         return blocks;
+    }
+
+    public Block CheckDirForBlock(Vector2 dir)
+    {
+        var origin = (Vector2)transform.position + dir;
+
+        var col = Physics2D.OverlapCircle(origin, 0.1f, blocksLayerMask);
+
+        if (!col) return null;
+
+        var block = col.gameObject.GetComponent<Block>();
+
+        Debug.Assert(block != null);
+        // Gizmos.DrawLine(transform.position, origin);
+        return block;
     }
 
     public void Explode()
     {
         _blocksManager.RemoveBlock(this);
         Destroy(gameObject);
+    }
+
+    private void Update()
+    {
+        _visualPosSpring.UpdateSpring(transform.position);
+        visual.position = _visualPosSpring.Current;
+        float verticalVel = _visualPosSpring.Velocity.y;
+
+        float squash = 1 + (Mathf.Abs(verticalVel) / squashAmountOverVelocity);
+        visual.localScale = new Vector3(1 / squash, squash);
     }
 }

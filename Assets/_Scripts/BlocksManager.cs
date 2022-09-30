@@ -8,6 +8,10 @@ public class BlocksManager : MonoBehaviour
     public Block testBlock;
     
     private List<Block> _allBlocks = new List<Block>();
+    [SerializeField] private GameplayCameraController cam;
+    [SerializeField] private LayerMask blocksLayer;
+
+    
 
     public void AddBlock(Block b) => _allBlocks.Add(b);
     public void RemoveBlock(Block b) => _allBlocks.Remove(b);
@@ -20,7 +24,7 @@ public class BlocksManager : MonoBehaviour
 
         foreach (var b in blocks)
         {
-            Gizmos.DrawSphere(b.transform.position + Vector3.back * 2, 0.2f);
+            Gizmos.DrawWireSphere(b.transform.position + Vector3.back * 2, 0.2f);
         }
     }
 
@@ -43,6 +47,61 @@ public class BlocksManager : MonoBehaviour
             CheckAllBlocksForExplode();
             break;
         }
+    }
+
+    public void PlaceBlocks(List<Block> blocks, int horizontalPos)
+    {
+        Vector3 origin = new Vector3(horizontalPos, -cam.Height);
+        var hit = Physics2D.Raycast(origin, Vector2.up, float.PositiveInfinity, blocksLayer);
+
+        Vector3 placePos;
+
+        if (!hit)
+            placePos = new Vector3(horizontalPos, cam.Height - 0.5f);
+        else
+        {
+            Block bottomBlock = hit.collider.gameObject.GetComponent<Block>();
+            
+            Debug.Assert(bottomBlock != null);
+
+            placePos = bottomBlock.transform.position + Vector3.down * 0.5f;
+        }
+
+        for (int i = blocks.Count - 1; i >= 0; i--)
+        {
+            blocks[i].transform.position = placePos + Vector3.down * i;
+            blocks[i].EndHold();
+        }
+        
+        CheckAllBlocksForExplode();
+    }
+
+    public List<Block> GetVerticalBlocksFromBottom(int horizontalPos, int maxCount)
+    {
+        var list = new List<Block>();
+
+        Vector3 origin = new Vector3(horizontalPos, -cam.Height);
+        var hit = Physics2D.Raycast(origin, Vector2.up, float.PositiveInfinity, blocksLayer);
+
+        if (!hit)
+            return list;
+
+        Block b = hit.collider.gameObject.GetComponent<Block>();
+        
+        Debug.Assert(b != null);
+
+        while (b != null && list.Count < maxCount)
+        {
+            list.Add(b);
+            
+            Block newBlock = b.CheckDirForBlock(Vector3.up);
+
+            if (!newBlock || b.kind != newBlock.kind)
+                break;
+            b = newBlock;
+        }
+
+        return list;
     }
 
     public List<Block> GetSameColorBlocks(Block block)

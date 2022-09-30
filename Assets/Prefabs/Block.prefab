@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 33e4d931bfb3445b8915dd0953f4c27c, type: 2}
+  - {fileID: 2100000, guid: 80cb765cae8da4d00afc6acf5d1d3d1e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -212,3 +212,12 @@ MonoBehaviour:
   blocksLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  kind: 0
+  _visualPosSpring:
+    mass: 1
+    tension: 170
+    friction: 26
+  squashAmountOverVelocity: 30
+  col: {fileID: 8203022760636029808}
+  rb: {fileID: 8203022760636029807}
+  visual: {fileID: 8203022760608975351}
