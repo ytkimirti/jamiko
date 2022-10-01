@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocksManager: {fileID: 1002140729}
+  startSequenceAnimator: {fileID: 1263934260}
 --- !u!4 &219597276
 Transform:
   m_ObjectHideFlags: 0
