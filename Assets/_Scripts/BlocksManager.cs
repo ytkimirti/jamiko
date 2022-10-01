@@ -19,19 +19,7 @@ public class BlocksManager : MonoBehaviour
     [SerializeField] private float spawnTimeChangePerLevel;
     private float _spawnTimer;
 
-    private float SpawnTime => Mathf.Max(minSpawnTime, maxSpawnTime - spawnTimeChangePerLevel * CurrentLevel);
-
-    public int CurrentLevel
-    {
-        get
-        {
-            if (_currentLevel == -1)
-                _currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
-            return _currentLevel;
-        }
-    }
-
-    private int _currentLevel = -1;
+    private float SpawnTime => Mathf.Max(minSpawnTime, maxSpawnTime - spawnTimeChangePerLevel * GameManager.Instance.CurrentStage);
 
     [Serializable]
     private class BlockType
@@ -212,6 +200,8 @@ public class BlocksManager : MonoBehaviour
     
     private void Update()
     {
+        if (!GameManager.Instance.GameStarted)
+            return;
         if (Input.GetKeyDown(KeyCode.A) || _spawnTimer <= 0)
         {
             SpawnRandomRow();

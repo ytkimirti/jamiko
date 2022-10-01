@@ -8,6 +8,18 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     [SerializeField] private BlocksManager blocksManager;
     [SerializeField] private Animator startSequenceAnimator;
+    
+    public int CurrentStage
+    {
+        get
+        {
+            if (_currentStage == -1)
+                _currentStage = PlayerPrefs.GetInt("currentLevel", 1);
+            return _currentStage;
+        }
+    }
+
+    private int _currentStage = -1;
 
     private void Awake()
     {
@@ -17,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
+        StartGameSequence();
     }
 
     IEnumerator StartSequenceEnum()
@@ -30,10 +42,18 @@ public class GameManager : MonoBehaviour
         }
         startSequenceAnimator.SetTrigger("Start");
         yield return new WaitForSeconds(5f);
+        StartGame();
+    }
+
+    private void StartGameSequence()
+    {
+        StartCoroutine(StartSequenceEnum());
     }
 
     private void StartGame()
     {
+        if (GameStarted)
+            return;
         GameStarted = true;
     }
 
