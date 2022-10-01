@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Build.Content;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -57,7 +56,7 @@ public class BlocksManager : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             float xPos = (i - 2) * 1;
-            var pos = new Vector3(xPos, cam.Height, 0);
+            var pos = new Vector3(xPos, cam.TopPosition, 0);
             Block block = Instantiate(GetRandomBlockPrefab(), pos, Quaternion.identity, transform).GetComponent<Block>();
             block.Init(this);
         }
@@ -82,7 +81,7 @@ public class BlocksManager : MonoBehaviour
                 minHeight = b.transform.position.y;
         }
 
-        if (minHeight < -cam.Height - 0.5f)
+        if (minHeight < cam.BottomPosition - 0.5f)
         {
             GameManager.Instance.GameOver(false);
         }
@@ -175,13 +174,13 @@ public class BlocksManager : MonoBehaviour
     {
         if (blocks.Count == 0)
             return;
-        Vector3 origin = new Vector3(horizontalPos, -cam.Height);
+        Vector3 origin = new Vector3(horizontalPos, cam.BottomPosition);
         var hit = Physics2D.Raycast(origin, Vector2.up, float.PositiveInfinity, blocksLayer);
 
         Vector3 placePos;
 
         if (!hit)
-            placePos = new Vector3(horizontalPos, cam.Height - 0.5f);
+            placePos = new Vector3(horizontalPos, cam.TopPosition - 0.5f);
         else
         {
             Block bottomBlock = hit.collider.gameObject.GetComponent<Block>();
@@ -226,7 +225,7 @@ public class BlocksManager : MonoBehaviour
     {
         var list = new List<Block>();
 
-        Vector3 origin = new Vector3(horizontalPos, -cam.Height);
+        Vector3 origin = new Vector3(horizontalPos, cam.BottomPosition);
         var hit = Physics2D.Raycast(origin, Vector2.up, float.PositiveInfinity, blocksLayer);
 
         if (!hit)

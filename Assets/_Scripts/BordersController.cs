@@ -14,7 +14,7 @@ public class BordersController : MonoBehaviour
     {
         if (!camera) return;
             
-        topBorder.position = Vector3.up * camera.Height;
-        bottomBorder.position = Vector3.up * -camera.Height;
+        topBorder.position = Vector3.up * camera.TopPosition;
+        bottomBorder.position = Vector3.up * -camera.BottomPosition;
     }
 }
