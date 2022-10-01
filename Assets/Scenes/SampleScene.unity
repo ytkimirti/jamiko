@@ -2904,5 +2904,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlockBlue
       objectReference: {fileID: 0}
+    - target: {fileID: 6121746092579704656, guid: 5510b8f80331b4267bdcc0d08f5239b3, type: 3}
+      propertyPath: flashedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 1494e85519d81458fa793a74f5775412, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5510b8f80331b4267bdcc0d08f5239b3, type: 3}

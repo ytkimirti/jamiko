@@ -178,6 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8203022760608975351}
   - component: {fileID: 6611871727314820612}
+  - component: {fileID: 1506676694269488805}
   m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
@@ -213,6 +214,28 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1506676694269488805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8203022760608975350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3764a71ce99b4bba89ab40aa4932287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMultiple: 1
+  isUnscaledTime: 0
+  spriteRenderer: {fileID: 0}
+  spriteRenderers:
+  - {fileID: 1619578759767815784}
+  - {fileID: 4195621917879386093}
+  flashTime: 0.1
+  flashCount: 1
+  flashedColor: {r: 1, g: 1, b: 1, a: 1}
+  flashedMaterial: {fileID: 2100000, guid: 1494e85519d81458fa793a74f5775412, type: 2}
 --- !u!1 &8203022760636029806
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,8 +338,13 @@ MonoBehaviour:
     mass: 1
     tension: 250
     friction: 26
+  _visualScaleSpring:
+    mass: 1
+    tension: 170
+    friction: 25
   squashAmountOverVelocity: 30
   explodingLayer: 8
   col: {fileID: 8203022760636029808}
   rb: {fileID: 8203022760636029807}
   visual: {fileID: 8203022760608975351}
+  spriteFlasher: {fileID: 1506676694269488805}
