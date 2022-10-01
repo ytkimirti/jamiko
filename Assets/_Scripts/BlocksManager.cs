@@ -63,6 +63,15 @@ public class BlocksManager : MonoBehaviour
 
     public void AddBlock(Block b) => _allBlocks.Add(b);
     public void RemoveBlock(Block b) => _allBlocks.Remove(b);
+
+    public void FlashBlocks(BlockKind kind)
+    {
+        foreach (var b in _allBlocks)
+        {
+            if (b.kind == kind)
+                b.Highlight();
+        }
+    }
     
     private void OnDrawGizmos()
     {

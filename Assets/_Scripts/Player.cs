@@ -80,6 +80,10 @@ public class Player : MonoBehaviour
             }
         }
         
+        // This is the first block we will hold
+        if (_holdedBlocks.Count == 0)
+            blocksManager.FlashBlocks(blocksToTake[0].kind);
+        
         foreach (var block in blocksToTake)
         {
             block.StartHold();

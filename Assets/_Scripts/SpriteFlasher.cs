@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
@@ -19,13 +20,28 @@ public class SpriteFlasher : MonoBehaviour
     public int flashCount;
 
     [Space]
-
+    
     public Color flashedColor = Color.white;
+    [Required()] public Material flashedMaterial;
+    private Material _defMaterial;
 
     [Space]
 
     List<Color> defColors;
     bool isFlashing;
+
+    private void Start()
+    {
+        if (isMultiple && spriteRenderers.Length > 0)
+        {
+            _defMaterial = spriteRenderers[0].material;
+        }
+        else if (!isMultiple && spriteRenderer)
+        {
+            _defMaterial = spriteRenderer.material;
+        }
+            
+    }
 
     [Button]
     public void Flash()
@@ -82,12 +98,14 @@ public class SpriteFlasher : MonoBehaviour
             {
                 defColors.Add(spriteRen.color);
                 spriteRen.color = flashedColor;
+                spriteRen.material = flashedMaterial;
             }
         }
         else
         {
             defColors.Add(spriteRenderer.color);
             spriteRenderer.color = flashedColor;
+            spriteRenderer.material = flashedMaterial;
         }
     }
 
@@ -98,11 +116,13 @@ public class SpriteFlasher : MonoBehaviour
             for (int i = 0; i < spriteRenderers.Length; i++)
             {
                 spriteRenderers[i].color = defColors[i];
+                spriteRenderers[i].material = _defMaterial;
             }
         }
         else
         {
             spriteRenderer.color = defColors[0];
+            spriteRenderer.material = _defMaterial;
         }
     }
 }

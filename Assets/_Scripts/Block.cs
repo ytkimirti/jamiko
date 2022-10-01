@@ -21,14 +21,15 @@ public class Block : MonoBehaviour
     
     public bool IsHolded { get; private set; }
     [SerializeField] private Vector3Spring _visualPosSpring;
+    [SerializeField] private Vector3Spring _visualScaleSpring;
     [SerializeField] private float squashAmountOverVelocity;
     [SerializeField] private int explodingLayer;
     
-    [Header("Refernces")]
+    [Header("References")]
     [SerializeField] private Collider2D col;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform visual;
-
+    [SerializeField] private SpriteFlasher spriteFlasher;
     
     // public void SetTargetHoldPos(Vector2 pos) => _targetHoldPos = pos;
 
@@ -50,8 +51,14 @@ public class Block : MonoBehaviour
     private void Start()
     {
         _visualPosSpring.Current = transform.position;
+        _visualScaleSpring.Current = visual.localScale;
     }
 
+    public void Highlight()
+    {
+        // spriteFlasher.Flash();
+        _visualScaleSpring.Velocity = Vector3.one * -5f;
+    }
 
     private void OnDrawGizmos()
     {
@@ -123,7 +130,9 @@ public class Block : MonoBehaviour
         float verticalVel = _visualPosSpring.Velocity.y;
 
         float squash = 1 + (Mathf.Abs(verticalVel) / squashAmountOverVelocity);
-        visual.localScale = new Vector3(1 / squash, squash);
+        var squashScaleTarget = new Vector3(1 / squash, squash);
+        var springScale = _visualScaleSpring.UpdateSpring(Vector3.one);
+        visual.localScale = new Vector3(squashScaleTarget.x * springScale.x, squashScaleTarget.y * springScale.y, 1);
     }
 
     public void Init(BlocksManager parent)
