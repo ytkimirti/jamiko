@@ -8,7 +8,7 @@ public enum BlockKind
     None,
     Red,
     Blue,
-    Yellow,
+    Purple,
     Green
 }
 

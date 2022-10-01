@@ -7,17 +7,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1619578759767815784, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1219491527, guid: 3f9ff0972c1c14ee4910e1723fdf786a, type: 3}
     - target: {fileID: 4115225998751881490, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: kind
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4195621917879386093, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 234589282, guid: 5ecd62533b77248dfa21af1139505230, type: 3}
     - target: {fileID: 8203022760450643521, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 75bcf98e162544099a11980f9b6c4583, type: 2}
+      objectReference: {fileID: 2100000, guid: 33e4d931bfb3445b8915dd0953f4c27c, type: 2}
     - target: {fileID: 8203022760636029806, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: m_Name
-      value: BlockPurple
+      value: BlockBlue
       objectReference: {fileID: 0}
     - target: {fileID: 8203022760636029809, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: m_RootOrder
