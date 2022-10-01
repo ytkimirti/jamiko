@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool GameOver { get; private set; } = false;
     public bool GameStarted { get; private set; } = false;
     public static GameManager Instance;
     [SerializeField] private BlocksManager blocksManager;
-    [SerializeField] private Animator startSequenceAnimator;
+    [SerializeField] private IntroSequenceController sequenceController;
     
     public int CurrentStage
     {
@@ -34,13 +35,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartSequenceEnum()
     {
-        yield return new WaitForSeconds(0.3f);
         for (int i = 0; i < 3; i++)
         {
             blocksManager.SpawnRandomRow();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.35f);
         }
-        startSequenceAnimator.SetTrigger("Start");
+        sequenceController.Play();
         yield return new WaitForSeconds(5f);
         StartGame();
     }
@@ -57,8 +57,12 @@ public class GameManager : MonoBehaviour
         GameStarted = true;
     }
 
-    public void GameOver(bool didWin)
+    public void OnGameOver(bool didWin)
     {
+        if (GameOver)
+            return;
+        GameOver = true;
+        GameStarted = false;
         blocksManager.ExplodeAllBlocks();
     }
 }

@@ -71,7 +71,7 @@ public class BlocksManager : MonoBehaviour
 
         if (minHeight < cam.BottomPosition - 0.5f)
         {
-            GameManager.Instance.GameOver(false);
+            GameManager.Instance.OnGameOver(false);
         }
 
     }
