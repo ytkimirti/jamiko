@@ -1712,6 +1712,9 @@ MonoBehaviour:
     prefab: {fileID: 3587953173349022363, guid: 8c90e9fdbbecf4b519fbdc3ba04378ca, type: 3}
   - kind: 2
     prefab: {fileID: 3587953173349022363, guid: 5510b8f80331b4267bdcc0d08f5239b3, type: 3}
+  maxSpawnTime: 3
+  minSpawnTime: 1
+  spawnTimeChangePerLevel: 0.5
 --- !u!1001 &1135775596
 PrefabInstance:
   m_ObjectHideFlags: 0

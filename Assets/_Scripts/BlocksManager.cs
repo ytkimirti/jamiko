@@ -1,12 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
-using Update = Unity.VisualScripting.Update;
 
 public class BlocksManager : MonoBehaviour
 {
@@ -16,12 +11,37 @@ public class BlocksManager : MonoBehaviour
     [SerializeField] private GameplayCameraController cam;
     [SerializeField] private LayerMask blocksLayer;
     [SerializeField] private BlockType[] blockPrefabs;
+    
+    [Header("Auto Spawning")]
+    [SerializeField] private float maxSpawnTime;
+    [SerializeField] private float minSpawnTime;
+    [SerializeField] private float spawnTimeChangePerLevel;
+    private float _spawnTimer;
+
+    private float SpawnTime => Mathf.Max(minSpawnTime, maxSpawnTime - spawnTimeChangePerLevel * CurrentLevel);
+
+    public int CurrentLevel
+    {
+        get
+        {
+            if (_currentLevel == -1)
+                _currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
+            return _currentLevel;
+        }
+    }
+
+    private int _currentLevel = -1;
 
     [Serializable]
     private class BlockType
     {
         public BlockKind kind;
         public GameObject prefab;
+    }
+
+    private void Start()
+    {
+        ResetSpawnTimer();
     }
 
     private GameObject GetRandomBlockPrefab()
@@ -118,10 +138,17 @@ public class BlocksManager : MonoBehaviour
         CheckBlockForExplode(blocks[0]);
     }
 
+    private void ResetSpawnTimer() => _spawnTimer = SpawnTime;
+    
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) || _spawnTimer <= 0)
+        {
             SpawnRandomRow();
+            ResetSpawnTimer();
+        }
+
+        _spawnTimer -= Time.deltaTime;
     }
 
     public List<Block> GetVerticalBlocksFromBottom(int horizontalPos, int maxCount)
@@ -176,3 +203,4 @@ public class BlocksManager : MonoBehaviour
         }
     }
 }
+
