@@ -63,6 +63,8 @@ public class Player : MonoBehaviour
 
     public void TakeBlock()
     {
+        if (!GameManager.Instance.GameStarted)
+            return;
         if (_holdedBlocks.Count == maxBlocksToHold)
             return;
         var blocksToTake = blocksManager.GetVerticalBlocksFromBottom(_horizontalPosition, 1);
