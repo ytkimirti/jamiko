@@ -427,6 +427,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBlocksToHold: 3
+  upSquashVelocity: 5
+  visualScaleSpring:
+    mass: 1
+    tension: 170
+    friction: 10
   horizontalSpring:
     mass: 1
     tension: 170
@@ -444,6 +449,7 @@ MonoBehaviour:
     - {fileID: 1941712589}
     - {fileID: 1718407103}
     - {fileID: 732531597}
+  visualAnimator: {fileID: 410301055}
 --- !u!1 &255309968
 GameObject:
   m_ObjectHideFlags: 0

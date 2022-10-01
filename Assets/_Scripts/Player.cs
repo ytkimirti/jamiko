@@ -9,9 +9,37 @@ using UnityEngine.PlayerLoop;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int maxBlocksToHold;
-
+    [SerializeField] private float upSquashVelocity;
+    [SerializeField] private Vector3Spring visualScaleSpring;
     
     private int _horizontalPosition = 0;
+
+    [SerializeField] private FloatSpring horizontalSpring;
+
+    [SerializeField] private Transform visual;
+    [SerializeField] private float visualRotateAmount;
+    [SerializeField] private BlocksManager blocksManager;
+    [SerializeField] private List<HoldPosition> blockHoldTransforms = new List<HoldPosition>();
+    [SerializeField] private Animator visualAnimator;
+
+    
+
+    [Serializable]
+    class HoldPosition
+    {
+        public List<Transform> positions = new List<Transform>();
+    }
+    
+    private List<Block> _holdedBlocks = new List<Block>();
+    private static readonly int UpString = Animator.StringToHash("Up");
+
+    public BlockKind HoldedKind => _holdedBlocks.Count > 0 ? _holdedBlocks[0].kind : BlockKind.None;
+    
+
+    private void Start()
+    {
+        visualScaleSpring.Current = Vector3.one;
+    }
 
     public void MoveRight()
     {
@@ -27,22 +55,11 @@ public class Player : MonoBehaviour
         _horizontalPosition--;
     }
 
-    [SerializeField] private FloatSpring horizontalSpring;
-
-    [SerializeField] private Transform visual;
-    [SerializeField] private float visualRotateAmount;
-    [SerializeField] private BlocksManager blocksManager;
-    [SerializeField] private List<HoldPosition> blockHoldTransforms = new List<HoldPosition>();
-
-    [Serializable]
-    class HoldPosition
+    public void SquashVisual(float sign)
     {
-        public List<Transform> positions = new List<Transform>();
+        visualScaleSpring.Velocity = new Vector3(-upSquashVelocity * sign, upSquashVelocity * sign);
+        visualAnimator.SetTrigger(UpString);
     }
-    
-    private List<Block> _holdedBlocks = new List<Block>();
-
-    public BlockKind HoldedKind => _holdedBlocks.Count > 0 ? _holdedBlocks[0].kind : BlockKind.None;
 
     public void TakeBlock()
     {
@@ -52,6 +69,7 @@ public class Player : MonoBehaviour
 
         if (blocksToTake.Count == 0)
             return;
+        SquashVisual(-1);
 
         if (_holdedBlocks.Count != 0)
         {
@@ -92,8 +110,11 @@ public class Player : MonoBehaviour
 
     public void ThrowBlock()
     {
+        if (_holdedBlocks.Count == 0)
+            return;
         blocksManager.PlaceBlocks(_holdedBlocks, _horizontalPosition);
         _holdedBlocks.Clear();
+        SquashVisual(1);
     }
     
     public void ActionButton()
@@ -109,6 +130,7 @@ public class Player : MonoBehaviour
 
         UpdateInput();
         UpdateHoldedBlocks();
+        visual.localScale = visualScaleSpring.UpdateSpring(Vector3.one);
     }
 
     private void UpdateInput()
