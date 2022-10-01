@@ -30,6 +30,12 @@ public class Block : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform visual;
     [SerializeField] private SpriteFlasher spriteFlasher;
+    [SerializeField] private AudioSource explodeAudioSource;
+    [SerializeField] private AudioClip komboSoundClip;
+    [SerializeField] private GameObject komboPrefab;
+
+    
+    
     
     // public void SetTargetHoldPos(Vector2 pos) => _targetHoldPos = pos;
 
@@ -102,6 +108,22 @@ public class Block : MonoBehaviour
         return block;
     }
 
+    // Being host means am I the one that got thrown in the end.
+    // It's used to play sounds etc.
+    public void Explode(bool isCombo, bool isHost)
+    {
+        if (isHost)
+        {
+            if (isCombo)
+                explodeAudioSource.clip = komboSoundClip;
+            explodeAudioSource.Play();
+        }
+
+        if (isCombo)
+            Instantiate(komboPrefab, transform.position, Quaternion.identity);
+        Explode();
+    }
+
     public void Explode()
     {
         if (IsDed)
@@ -120,6 +142,8 @@ public class Block : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 5 * Time.deltaTime);
             yield return null;
         }
+
+        yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
 

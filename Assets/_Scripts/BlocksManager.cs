@@ -130,12 +130,14 @@ public class BlocksManager : MonoBehaviour
         var list = GetSameColorBlocks(b);
 
         if (list.Count < 3) return;
+
+        bool isCombo = list.Count > 6;
         
         foreach (var neighbour in list)
         {
-            neighbour.Explode();
+            neighbour.Explode(isCombo, false);
         }
-        b.Explode();
+        b.Explode(isCombo, true);
     }
 
     public void CheckAllBlocksForExplode()

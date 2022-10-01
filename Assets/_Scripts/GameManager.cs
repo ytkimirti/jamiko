@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool DisableDebugMode = false;
     public bool GameOver { get; private set; } = false;
     public bool GameStarted { get; private set; } = false;
     public static GameManager Instance;
@@ -30,7 +31,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartGameSequence();
+        if (Application.isEditor && !DisableDebugMode)
+            StartGame();
+        else
+            StartGameSequence();
     }
 
     IEnumerator StartSequenceEnum()
