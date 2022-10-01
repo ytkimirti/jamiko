@@ -313,9 +313,10 @@ MonoBehaviour:
   kind: 0
   _visualPosSpring:
     mass: 1
-    tension: 170
+    tension: 250
     friction: 26
   squashAmountOverVelocity: 30
+  explodingLayer: 8
   col: {fileID: 8203022760636029808}
   rb: {fileID: 8203022760636029807}
   visual: {fileID: 8203022760608975351}

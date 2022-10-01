@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -135,7 +136,16 @@ public class BlocksManager : MonoBehaviour
             blocks[i].EndHold();
         }
         
-        CheckBlockForExplode(blocks[0]);
+        // CheckBlockForExplode(blocks[0]);
+        StartCoroutine(CheckExplodeEnum(blocks[0]));
+    }
+
+    IEnumerator CheckExplodeEnum(Block block)
+    {
+        yield return new WaitForSeconds(0.1f);
+        
+        if (block && !block.IsDed && !block.IsHolded)
+            CheckBlockForExplode(block);
     }
 
     private void ResetSpawnTimer() => _spawnTimer = SpawnTime;

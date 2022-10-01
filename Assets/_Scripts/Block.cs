@@ -14,6 +14,7 @@ public enum BlockKind
 
 public class Block : MonoBehaviour
 {
+    public bool IsDed { get; private set; }
     [SerializeField] private LayerMask blocksLayerMask; 
     private BlocksManager _blocksManager;
     public BlockKind kind;
@@ -21,8 +22,7 @@ public class Block : MonoBehaviour
     public bool IsHolded { get; private set; }
     [SerializeField] private Vector3Spring _visualPosSpring;
     [SerializeField] private float squashAmountOverVelocity;
-
-    
+    [SerializeField] private int explodingLayer;
     
     [Header("Refernces")]
     [SerializeField] private Collider2D col;
@@ -44,6 +44,7 @@ public class Block : MonoBehaviour
         col.enabled = true;
         rb.isKinematic = false;
         IsHolded = false;
+        rb.velocity = Vector2.zero;
     }
 
     private void Start()
@@ -96,8 +97,22 @@ public class Block : MonoBehaviour
 
     public void Explode()
     {
+        if (IsDed)
+            return;
         if (_blocksManager)
             _blocksManager.RemoveBlock(this);
+        IsDed = true;
+        gameObject.layer = explodingLayer;
+        StartCoroutine(DieEnum());
+    }
+
+    IEnumerator DieEnum()
+    {
+        while (transform.localScale.x > 0.03f)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, 5 * Time.deltaTime);
+            yield return null;
+        }
         Destroy(gameObject);
     }
 

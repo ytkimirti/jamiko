@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: -1219491527, guid: 3f9ff0972c1c14ee4910e1723fdf786a, type: 3}
     - target: {fileID: 4115225998751881490, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: kind
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4195621917879386093, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: m_Sprite
@@ -25,7 +25,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 33e4d931bfb3445b8915dd0953f4c27c, type: 2}
     - target: {fileID: 8203022760636029806, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: m_Name
-      value: BlockBlue
+      value: BlockPurple
       objectReference: {fileID: 0}
     - target: {fileID: 8203022760636029809, guid: 3a7cd577bbd574fac873271b6032be1c, type: 3}
       propertyPath: m_RootOrder
