@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -52,12 +53,63 @@ public class BlocksManager : MonoBehaviour
 
     public void SpawnRandomRow()
     {
+        MoveAllBlocks(-1);
         for (int i = 0; i < 5; i++)
         {
             float xPos = (i - 2) * 1;
             var pos = new Vector3(xPos, cam.Height, 0);
             Block block = Instantiate(GetRandomBlockPrefab(), pos, Quaternion.identity, transform).GetComponent<Block>();
             block.Init(this);
+        }
+        CheckForGameOver();
+    }
+
+    public void MoveAllBlocks(float amount)
+    {
+        foreach (var block in _allBlocks)
+        {
+            block.transform.Translate(0, amount, 0);
+        }
+    }
+
+    public void CheckForGameOver()
+    {
+        float minHeight = float.PositiveInfinity;
+        
+        foreach (var b in _allBlocks)
+        {
+            if (b.transform.position.y < minHeight)
+                minHeight = b.transform.position.y;
+        }
+
+        if (minHeight < -cam.Height - 0.5f)
+        {
+            GameManager.Instance.GameOver(false);
+        }
+
+    }
+
+    public void ExplodeAllBlocks()
+    {
+        StartCoroutine(ExplodeAllBlocksEnum());
+    }
+
+    IEnumerator ExplodeAllBlocksEnum()
+    {
+        var copyBlocks = new List<Block>(_allBlocks);
+        
+        copyBlocks.Sort((x, y) =>
+        {
+            int rx = Mathf.RoundToInt(x.transform.position.x);
+            int ry = Mathf.RoundToInt(x.transform.position.y);
+            int lx = Mathf.RoundToInt(y.transform.position.x);
+            int ly = Mathf.RoundToInt(y.transform.position.y);
+            return (ry - ly) * 1000 + (rx - lx);
+        });
+        foreach (var b in copyBlocks)
+        {
+            b.Explode();
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
