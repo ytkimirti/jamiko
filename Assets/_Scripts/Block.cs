@@ -83,7 +83,7 @@ public class Block : MonoBehaviour
     {
         var origin = (Vector2)transform.position + dir;
 
-        var col = Physics2D.OverlapCircle(origin, 0.1f, blocksLayerMask);
+        var col = Physics2D.OverlapPoint(origin, blocksLayerMask);
 
         if (!col) return null;
 
