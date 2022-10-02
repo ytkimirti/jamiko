@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using OFK;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -21,7 +22,8 @@ public class Player : MonoBehaviour
     [SerializeField] private BlocksManager blocksManager;
     [SerializeField] private List<HoldPosition> blockHoldTransforms = new List<HoldPosition>();
     [SerializeField] private Animator visualAnimator;
-
+    [SerializeField] private SoundData whooshHigh;
+    [SerializeField] private SoundData whooshLow;
     
 
     [Serializable]
@@ -72,6 +74,7 @@ public class Player : MonoBehaviour
         if (blocksToTake.Count == 0)
             return;
         SquashVisual(-1);
+        whooshLow.Play();
 
         if (_holdedBlocks.Count != 0)
         {
@@ -121,6 +124,7 @@ public class Player : MonoBehaviour
         blocksManager.PlaceBlocks(_holdedBlocks, _horizontalPosition);
         _holdedBlocks.Clear();
         SquashVisual(1);
+        whooshHigh.Play();
     }
     
     public void ActionButton()

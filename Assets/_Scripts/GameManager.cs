@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using OFK;
+using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int minScore;
     [SerializeField] private int scoreChangePerStage;
     [SerializeField] private Transform progressBarTrans;
+    [SerializeField] private TextMeshPro scoreText;
     
     private int CurrentMaxScore => Mathf.Min(maxScore, minScore + scoreChangePerStage * CurrentStage);
     
@@ -31,6 +33,7 @@ public class GameManager : MonoBehaviour
         if (Score >= CurrentMaxScore)
             OnGameOver(true);
         progressBarTrans.localScale = new Vector3(Score / (float)CurrentMaxScore, 1, 1);
+        scoreText.text = Score.ToString();
     }
     
     public int CurrentStage
@@ -58,6 +61,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        scoreText.text = "0";
         if (Application.isEditor && !DisableDebugMode)
             StartGame();
         else
@@ -72,7 +76,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(0.35f);
         }
         sequenceController.Play();
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(6.5f);
         StartGame();
     }
 
@@ -97,6 +101,7 @@ public class GameManager : MonoBehaviour
         if (GameStarted)
             return;
         GameStarted = true;
+        MusicManager.Instance.PlayMusic();
     }
 
     public void OnGameOver(bool didWin)
@@ -114,6 +119,7 @@ public class GameManager : MonoBehaviour
             CurrentStage = 1;
         else
             CurrentStage = CurrentStage + 1;
+        MusicManager.Instance.StopMusic();
         StartCoroutine(GameOverEnum());
         sequenceController.OnGameOver(didWin);
     }
