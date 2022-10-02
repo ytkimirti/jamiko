@@ -121,6 +121,7 @@ public class Block : MonoBehaviour
 
         if (isCombo)
             Instantiate(komboPrefab, transform.position, Quaternion.identity);
+        GameManager.Instance.IncreaseScore(isCombo ? 200 : 100);
         Explode();
     }
 

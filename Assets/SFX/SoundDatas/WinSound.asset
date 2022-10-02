@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbcef74f8deb44737ab9c1ce5b793754, type: 3}
+  m_Name: WinSound
+  m_EditorClassIdentifier: 
+  volume: 1
+  clips:
+  - {fileID: 8300000, guid: f9aa977a610684be89f524d8355e686f, type: 3}
+  - {fileID: 8300000, guid: f8e37f3c2643743cd8e159e3b7c3513b, type: 3}
+  - {fileID: 8300000, guid: 9e656963f0cb54aa0abf0e691f5d9faa, type: 3}
+  playIfNotPlaying: 0
+  randomPitch: 0
+  pitchRange: {x: 1, y: 1}
+  pitch: 1
