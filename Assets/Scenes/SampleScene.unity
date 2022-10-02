@@ -1274,7 +1274,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 93401563
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 570606288, guid: 97dedaa629a5d4f46a3f72d2caa494d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2569,7 +2569,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 93401563
   m_SortingLayer: 1
-  m_SortingOrder: 2
+  m_SortingOrder: 5
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1198532632
 GameObject:
@@ -2892,6 +2892,9 @@ MonoBehaviour:
   stageImage: {fileID: 1574045262}
   anim: {fileID: 1263934260}
   audioSource: {fileID: 1263934262}
+  goImage: {fileID: 633284589}
+  gameOverSprite: {fileID: 1190667100, guid: 389a8eb88bec74e1d87b7f55ec41e10b, type: 3}
+  gameWonSprite: {fileID: 421765120, guid: 389a8eb88bec74e1d87b7f55ec41e10b, type: 3}
 --- !u!82 &1263934262
 AudioSource:
   m_ObjectHideFlags: 0

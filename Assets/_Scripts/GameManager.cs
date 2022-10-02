@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour
         else
             CurrentStage = CurrentStage + 1;
         StartCoroutine(GameOverEnum());
+        sequenceController.OnGameOver(didWin);
     }
 
     IEnumerator GameOverEnum()
@@ -125,6 +126,6 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(0, LoadSceneMode.Single);
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 }

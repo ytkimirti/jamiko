@@ -9,6 +9,13 @@ public class IntroSequenceController : MonoBehaviour
     [SerializeField] private Image stageImage;
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private Image goImage;
+    [SerializeField] private Sprite gameOverSprite;
+    [SerializeField] private Sprite gameWonSprite;
+
+    
+
+    
 
     
     
@@ -26,6 +33,12 @@ public class IntroSequenceController : MonoBehaviour
     private void PlayAudio()
     {
         audioSource.Play();
+    }
+
+    public void OnGameOver(bool didWin)
+    {
+        goImage.sprite = didWin ? gameWonSprite : gameOverSprite;
+        anim.SetTrigger("End");
     }
     
 }
